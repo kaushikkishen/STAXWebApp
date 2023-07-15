@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>STAX StarApp</title>
+    
+    <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/bootstrap/css/bootstrap-theme.min.css">
+    <script src="static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  
+    <link rel="stylesheet" type="text/css" href="static/css/styles.css">
+
+
+  </head>
+  <body class="masthead"> 
+    <div class="row">
+    <!-- <div class="col-md-10"><h1>DG Skill</h1></div> -->
+    <div class="col-md-10"><h1>STAX Business Intelligence System </h1></div>
+    <div class="col-md-2"> 
+        <ul class="nav nav-pills">
+          <li role="presentation" class="btn btn-primary"><a href="signup" style="color: #f8f9fa;">Sign Up</a></li>
+          <li role="presentation" id="si" class="btn btn-secondary" style="margin-left: 2px;"><a href="signin" style="color: #f8f9fa;">Sign In</a></li>
+        </ul>  
+    </div>  
+
+    </div>
+
+    <div >
+      
+      <div class="slideshow-container" style="margin-top: 50px"> 
+
+        <div class="mySlides">
+          <div class="numbertext">1 / 3</div>
+          <img src="{{url_for('static',filename='images/img1.png')}}" style="width:100%;height: 400px;" alt="Mountain">  
+          <div class="text">7 day Trial Period</div> 
+        </div>
+        
+        <div class="mySlides"> 
+          <div class="numbertext">2 / 3</div>
+          <img src="{{url_for('static',filename='images/img1.jpg')}}" style="width:100%;height: 400px;" alt="Mountain">
+          <div class="text">Upskill</div>
+        </div>
+        
+        <div class="mySlides">
+          <div class="numbertext">3 / 3</div>
+          <img src="{{url_for('static',filename='images/network.jpg')}}" style="width:100%;height: 400px;" alt="Mountain2">     
+          <div class="text">Networking</div>
+        </div>
+  
+        <!-- <div class="mySlides">
+          <div class="numbertext">4 / 4</div>
+          <img src="{{url_for('static',filename='images/img3.jpg')}}" style="width:100%;height: 400px;" alt="Mountain2">     
+          <div class="text">Cyber-Security-Certification</div> 
+        </div> -->
+        
+        <a class="prev" onclick="plusSlides(-1)">❮</a>
+        <a class="next" onclick="plusSlides(1)">❯</a>
+        
+        </div>
+        <br>
+        
+        <div style="text-align:center">
+          <span class="dot" onclick="currentSlide(1)"></span> 
+          <span class="dot" onclick="currentSlide(2)"></span> 
+          <span class="dot" onclick="currentSlide(3)"></span>
+          <!-- <span class="dot" onclick="currentSlide(4)"></span>  -->
+        </div>
+  
+  
+  
+        <div class="cards-wrapper">
+          <div class="card" style="width: 30%;">
+            <img src="{{url_for('static',filename='images/logo1.jpg')}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Cloud Computing Fundamentals</h5>
+              <p class="card-text">
+                The first course in Google Cloud Computing Foundations Professional Certificate provides an overview of cloud computing, ways to use Google Cloud, and different compute options
+              </p>
+              <!-- <a href="#" class="btn btn-primary">Enroll</a> -->
+            </div> 
+          </div>
+          <div class="card" style="width: 30%;">
+            <img src="{{url_for('static',filename='images/blockchain.jpeg')}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Introduction to Blockchain</h5>
+              <p class="card-text">
+                Discover why blockchain is such a disruptive force across business, government and society.
+                In this course, you will learn how to design smart contracts, bitcoin wallets, fabricode, chain SDKs, and more.
+              </p>
+              <!-- <a href="#" class="btn btn-primary">Enroll</a> -->
+            </div>
+          </div>
+          <div class="card" style="width: 30%;"> 
+            <img src="{{url_for('static',filename='images/cybersecurity-freepik.jpg')}}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Cybersecurity Basics</h5>
+              <p class="card-text">
+                This course gives you the background needed to understand the basics of Cybersecurity. You will explore information security from its history to a description of various cybercriminals and cybersecurity threats concluding with the tools needed to prevent an attack.
+              </p>
+              <!-- <a href="#" class="btn btn-primary">Enroll</a>  -->
+            </div>
+          </div>
+        </div>  
+
+    </div>
+
+    <!-- <div>
+      <button type="button" class="btn btn-primary" ><a href="charts">Primary</a></button> 
+    </div>   -->
+
+
+      
+      
+      <script>
+      let slideIndex = 1;
+      showSlides(slideIndex);
+      
+      function plusSlides(n) {
+        showSlides(slideIndex += n);
+      }
+      
+      function currentSlide(n) {
+        showSlides(slideIndex = n);
+      }
+      
+      function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("dot");
+        if (n > slides.length) {slideIndex = 1}    
+        if (n < 1) {slideIndex = slides.length}
+        for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";  
+        }
+        for (i = 0; i < dots.length; i++) {
+          dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex-1].style.display = "block";  
+        dots[slideIndex-1].className += " active";
+      }
+      </script>
+
+      
+
+
+    {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <h3 class="flashes" align="center" style="color:#337ab7">{{ message }}</h3>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+  </body>
+</html>

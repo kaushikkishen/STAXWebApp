@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>STAX Course Dashboard</title>
+
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap-theme.min.css">
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
+    
+
+    <!-- Reference Kindle home -->
+    <link rel="shortcut icon" type="image/icon" href="../static/assets/images/favicon.ico"/>
+    <!-- Font Awesome -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Slick slider -->
+    <link href="../static/assets/css/slick.css" rel="stylesheet">
+    <!-- Theme color -->
+    <link id="switcher" href="../static/assets/css/theme-color/default-theme.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <!-- Open Sans for body font -->
+	  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700,800" rel="stylesheet">
+    <!-- Lato for Title -->
+  	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"> 
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      
+    
+    <style>
+      .chartMenu {
+        width: 100vw;
+        height: 40px;
+        background: #1A1A1A;
+        color: rgba(255, 26, 104, 1);
+      }
+      .chartMenu p {
+        padding: 10px;
+        font-size: 20px;
+      }
+      .chartCard {
+        margin-left: 35px;
+        /* width: 100vw; */
+        /* height: calc(100vh - 150px); */
+        /* background: rgba(26, 37, 255, 0.777); */
+        display: inline-block;
+        align-items: center;
+        justify-content: center;
+      }
+      .chartBox {
+        width: 700px;
+        padding: 20px;
+        border-radius: 20px;
+        /* border: solid 3px rgba(255, 26, 104, 1); */
+        background: white;
+      }
+
+      #mu-counter {
+        background-color: #fff;
+        background-position: center center;
+        background-size: cover;
+        background-attachment: fixed;
+        display: inline;
+        float: left;
+        position: relative;
+        width: 100%;
+      }
+
+      .mu-counter-area {
+        display: inline;
+        float: left;
+        padding: 70px 0 50px;
+        width: 100%;
+      }
+
+      .mu-counter-area h2 {
+        color: #fff;
+        text-align: center;
+      }
+
+      .mu-counter-block {
+        display: inline;
+        float: left;
+        width: 100%;
+      }
+
+      .mu-single-counter {
+        display: inline;
+        float: left;
+        text-align: center;
+        width: 80%;
+        border: 1px solid #ddd;
+        padding-bottom: 20px;
+        margin: 0 10%;
+      }
+
+      .mu-single-counter i {
+        font-size: 40px;
+        padding: 15px 40px;
+        margin-bottom: 0px;
+        display: inline-block;
+        padding-bottom: 0;
+        margin-top: -60px;
+        background: #fff;
+      }
+
+      .counter-value {
+        font-size: 35px;
+        font-weight: 700;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      .mu-counter-name {
+        color: #333;
+      }
+
+      .content-panel {
+    background: #ffffff;
+    box-shadow: 0px 3px 2px #aab2bd;
+    padding-top: 15px;
+    padding-bottom: 5px;
+    }
+
+    </style>
+  </head>
+<!-- <body style="background-color: rgb(81 14 128 / 83%);"> -->
+<body style="color: #797979;">
+
+  <div class="container-fluid px-0">	
+    <header>	<div class="shape"></div>	
+      <!-- Navbar -->	
+      <nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top"> 
+        <a class="navbar-brand " href="/courses" style="margin-left: 15px;">Courses</a> 
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> 
+          <span class="navbar-toggler-icon"></span> 
+        </button> 
+        <div class="collapse navbar-collapse" id="navbarSupportedContent"> 
+          <div class="col-lg-9">
+            <ul class="navbar-nav mr-auto"> 
+              <li class="nav-item"> 
+                <a class="nav-link" href="/add">Add Courses 
+                  <!-- <span class="sr-only">(current)</span> -->
+                </a> 
+              </li> 
+              <li class="nav-item"> 
+                <a class="nav-link" href="/enrolled_courses">Enrolled Courses</a> 
+              </li>
+              <li class="nav-item dropdown">
+                <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" aria-expanded="false">Dashboard</a>
+                <div class="dropdown-menu" role="menu">
+                  <a class="dropdown-item active" role="presentation" href="/course_dashboard" style="color: white !important;">Course</a>
+                  <a class="dropdown-item" role="presentation" href="/enrolled_courses_dashboard">Enrolled Courses Dashboard</a>
+                </div>
+              </li>
+            </ul> 
+          </div>
+  
+   
+          <div class="col-lg-3">
+            <span style="margin-left:190px"> 
+              <a class="login" style="color:#0d6efd" >{{session['current_user']}}</a>
+            </span>
+            <a class="btn btn-secondary" role="button" href="/logout" style="float: right;color: #f8f9fa;margin-right: 15px;">
+              Sign Out
+            </a>
+          </div>
+  
+        </div>	
+      </nav>	<!-- ./ end of navbar -->
+    </header>	
+  </div>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <h3 class="flashes" align="center" style="color:red">{{ message }}</h3>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="col-lg-12" style="margin-top:55px">
+  <div class="alert alert-info">
+    <h3> STAX Course Analytics Dashboard </h3>
+  </div>
+</div>
+
+<section style="margin-left: 20px !important;padding-bottom: 30px;margin-right: 20px;">
+
+  <div class="row mt">
+
+    <div class="col-lg-6">
+      <div class="content-panel">
+        
+        <div class="chartBox" style="margin-left: 15px">
+            <canvas id="courseBySubjectChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="content-panel">
+          <div class="chartBox" style="margin-left: 15px">
+              <canvas id="courseByTypeChart"></canvas>
+          </div>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+
+  <script>
+      
+      
+      const labels = {{labels}};
+      const values = {{values}};
+      const typeLabels = {{typeLabels}};
+      const typeValues = {{typeValues}};
+      console.log(labels)
+      console.log(values)
+      console.log(typeLabels)
+      console.log(typeValues)
+
+      function makeCourseBySubjectChart(labels, values) {
+      // Bar chart
+      new Chart(document.getElementById("courseBySubjectChart"), {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "Courses",
+                borderWidth:5,
+                backgroundColor: [ '#6050DC',
+                      '#FFAB05',
+                      '#D52DB7',
+                      '#FF6B45'],
+                data: values
+              }
+            ]
+          },
+          options: {
+            title: {
+              display: true,
+              text: 'Number of Course in the System by Categories'
+            },
+            scales: {
+              xAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                },
+                barPercentage: 0.3,
+                borderWidth:3
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                }
+              }]
+          },
+            legend:{
+              labels:{
+                generateLabels:(chart) =>{
+                  console.log(chart)
+                  return chart.data.labels.map(
+                    (label, index) =>({
+                      text:label,
+                      fillStyle: chart.data.datasets[0].backgroundColor[index],
+                    })
+                  )
+                }
+              }
+          }
+          }
+      });
+    }
+    function makeCourseByTypeChart(labels, values) {
+      // Bar chart
+      new Chart(document.getElementById("courseByTypeChart"), {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "Courses",
+                borderWidth:3,
+                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                data: values
+              }
+            ]
+          },
+          options: {
+            title: {
+              display: true,
+              text: 'Number of Course in the System by Payment Type'
+            },
+            scales: {
+              xAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                },
+                barPercentage: 0.2
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true,
+                }
+              }]
+          },
+            legend:{
+              labels:{
+                generateLabels:(chart) =>{
+                  console.log(chart)
+                  return chart.data.labels.map(
+                    (label, index) =>({
+                      text:label,
+                      fillStyle: chart.data.datasets[0].backgroundColor[index],
+                    })
+                  )
+                }
+              }
+          }
+          }
+      });
+    }
+    makeCourseBySubjectChart(labels,values)
+    makeCourseByTypeChart(typeLabels,typeValues)
+    
+  </script>
+
+
+ <main style="margin-top: 70px;background-color: #797979;" >
+
+  <section id="mu-counter">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="mu-counter-area">
+
+            <div class="mu-counter-block">
+              <div class="row">
+
+                
+                <div class="col-md-4 col-sm-6">
+                  <div class="mu-single-counter">
+                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                    <div class="counter-value" data-count={{course_count}}>0</div>
+                    <h5 class="mu-counter-name">Courses</h5>
+                  </div>
+                </div>
+                
+
+                
+                <div class="col-md-4 col-sm-6">
+                  <div class="mu-single-counter">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    <div class="counter-value" data-count={{student_count}}>0</div>
+                    <h5 class="mu-counter-name">Active Learners</h5>
+                  </div>
+                </div>
+                
+
+                
+                <div class="col-md-4 col-sm-6">
+                  <div class="mu-single-counter">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <div class="counter-value" data-count={{instructor_count}}>0</div>
+                    <h5 class="mu-counter-name">Active Instructors</h5>
+                  </div>
+                </div>
+                
+
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main> 
+
+     <!-- jQuery library -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+     <!-- Include all compiled plugins (below), or include individual files as needed -->
+     <!-- Bootstrap -->
+     <script type="text/javascript" src="static/assets/js/slick.min.js"></script>
+     <!-- Counter js -->
+     <script type="text/javascript" src="static/assets/js/counter.js"></script>
+   
+</body>
+</html>
